@@ -3,7 +3,7 @@ const app = require('./app');
 const config = require('./config');
 
 const server = app.listen(config.port, '0.0.0.0', () => {
-  logger.info(`🚀 Running on port ${config.port}`);
+  logger.info(`🚀 Server is starting at ${config.port}`);
 });
 
 process.on('uncaughtException', exception => {

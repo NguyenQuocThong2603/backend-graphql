@@ -1,6 +1,6 @@
 const { createLogger, format, transports } = require('winston');
 
-const { combine, printf, errors } = format;
+const { combine, printf, errors, colorize } = format;
 
 const logger = createLogger({
   exitOnError: false,
@@ -12,6 +12,7 @@ const logger = createLogger({
     error: 0,
   },
   format: combine(
+    colorize(),
     printf(info => {
       const splat = info[Symbol.for('splat')];
       if (splat) {
