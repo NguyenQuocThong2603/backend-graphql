@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   lastName: String,
   email: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   role: { type: String, enum: ['User', 'Admin'], default: 'User' },
 
   photo: { type: String, default: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZO5vYo_dJvLzL0tIWfY31t9msAvClE2I5BpEdS3c&s' },

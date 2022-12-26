@@ -17,4 +17,4 @@ if (config.nodeEnv !== 'test') {
   });
 }
 
-module.exports = () => ({ ...controllers, loaders, ...clientRedis });
+module.exports = () => ({ ...controllers, loaders, clientRedis });

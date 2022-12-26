@@ -4,11 +4,11 @@ type User {
   lastName: String
   email: String
   username: String
-  role: String
+  role: Role
 
   photo: String
   bio: String
-  status: String
+  status: UserStatus
 
   createdAt: DateTime
   updatedAt: DateTime
