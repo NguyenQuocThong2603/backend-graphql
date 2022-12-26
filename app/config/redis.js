@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
   redisDbs: {
     authDb: {
@@ -8,8 +10,9 @@ module.exports = {
       // get tls() {
       //   return (process.env.NODE_ENV === 'test' || process.env.SKIP_TLS) ? undefined : { servername: this.host };
       // },
-      secret: process.env.REDIS_SECRET,
-      expiredTime: parseInt(process.env.EXPIRED_TIME, 10),
+
     },
+    secret: process.env.REDIS_SECRET,
+    expiredTime: parseInt(process.env.EXPIRED_TIME, 10),
   },
 };

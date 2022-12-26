@@ -4,7 +4,7 @@ const config = require('../config');
 require('./models');
 const controllers = require('./controllers');
 const loaders = require('./loaders');
-const clientRedis = require('./utils/redis');
+const { clientRedis } = require('./utils');
 
 if (config.nodeEnv !== 'test') {
   mongoose.set('strictQuery', false);
