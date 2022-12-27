@@ -10,12 +10,12 @@ async function createContext({ req }) {
   if (!user) {
     if (!scope.guestScope.some(operation => operation === queryAfterParse.definitions[0]
       .selectionSet.selections[0].name.value)) {
-      throwError(code.FORBIDDEN, 'Forbidden', status.FORBIDDEN);
+      throwError(code.UNAUTHORIZED, 'Unauthorized', status.UNAUTHORIZED);
     }
   } else if (user.role === 'User') {
     if (!scope.userScope.some(operation => operation === queryAfterParse.definitions[0]
       .selectionSet.selections[0].name.value)) {
-      throwError(code.FORBIDDEN, 'Forbidden', status.FORBIDDEN);
+      throwError(code.UNAUTHORIZED, 'Unauthorized', status.UNAUTHORIZED);
     }
   }
 

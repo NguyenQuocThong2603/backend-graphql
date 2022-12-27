@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const { User } = require('../../models');
-const { getSelectedFields, throwError, code, status, authUtils } = require('../../utils');
+const { getSelectedFields, code, status, authUtils } = require('../../utils');
+const { throwError } = require('../../../utils');
 const config = require('../../../config');
 
 async function register(args) {
@@ -30,9 +31,7 @@ async function register(args) {
       password: hash,
       username,
     });
-    await user.save();
-
-    return user;
+    return user.save();
   });
 }
 
@@ -68,7 +67,7 @@ async function login(args, context, info) {
   return Promise.all([clientRedis.setex(
     token,
     config.redisDbs.expiredTime / 1000,
-    JSON.stringify({ email: user.email, role: user.role }),
+    JSON.stringify({ _id: user._id, email: user.email, role: user.role }),
   ),
   clientRedis.lpush(user.email, token),
   clientRedis.expire(user.email, config.redisDbs.expiredTime / 1000)])

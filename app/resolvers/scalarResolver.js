@@ -19,6 +19,8 @@ const dateScalar = new GraphQLScalarType({
   },
 });
 
-module.exports = {
+const scalarResolver = {
   DateTime: dateScalar,
 };
+
+module.exports = scalarResolver;

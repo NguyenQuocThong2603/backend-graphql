@@ -1,5 +1,6 @@
 const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
+const cors = require('cors');
 
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 
@@ -10,6 +11,8 @@ const typeDefs = require('./schemas');
 const resolvers = require('./resolvers');
 
 const app = express();
+
+app.use(cors());
 
 const server = new ApolloServer({
   schema: makeExecutableSchema({ typeDefs, resolvers }),

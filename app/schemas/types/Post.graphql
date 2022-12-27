@@ -4,7 +4,7 @@ type Post {
   content: String
   owner: User
 
-  status: String
+  status: PostStatus
 
   createdAt: DateTime
   updatedAt: DateTime
