@@ -7,8 +7,8 @@ type Mutation {
 
   createPost(title: String!, content: String!, status: PostStatus!): Post
   updatePost(input: UpdatePostInput!): Post
-  deletePost(_id: ID): GeneralResponse
-  hidePost(_id: ID): GeneralResponse
+  deletePost(id: ID): GeneralResponse
+  hidePost(id: ID): GeneralResponse
 
   clapPost(postId: ID, count: Int): GeneralResponse
   unclapPost(postId: ID): GeneralResponse

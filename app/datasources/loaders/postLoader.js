@@ -3,9 +3,22 @@ const _ = require('lodash');
 const { User, Clap } = require('../models');
 
 async function getClapByIds(ids) {
-  const numberOfClaps = await Clap.find({
-    _id: ids,
-  }).count();
+  const clapCount = await Clap.aggregate([
+    {
+      $match: { post: { $in: ids } },
+    },
+    {
+      $group: {
+        _id: '$post',
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  const clapCountMap = {};
+  clapCount.forEach(item => {
+    clapCountMap[item._id] = item.count;
+  });
+  return ids.map(id => clapCountMap[id] || 0);
 }
 
 const postLoaderClapCount = new DataLoader(getClapByIds);

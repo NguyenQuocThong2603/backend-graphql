@@ -1,4 +1,4 @@
-const status = {
+const statusCode = {
   OK: 200,
   CREATED: 201,
   ACCEPTED: 202,
@@ -14,4 +14,4 @@ const status = {
   FOUND: 302,
 };
 
-module.exports = status;
+module.exports = statusCode;

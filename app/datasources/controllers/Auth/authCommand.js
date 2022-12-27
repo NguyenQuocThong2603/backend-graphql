@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const { User } = require('../../models');
-const { getSelectedFields, code, status, authUtils } = require('../../utils');
+const { getSelectedFields, code, statusCode, authUtils } = require('../../utils');
 const { throwError } = require('../../../utils');
 const config = require('../../../config');
 
@@ -18,11 +18,11 @@ async function register(args) {
 
   return Promise.all([existedUserWithEmail, existedUserWithUsername]).then(async existedUser => {
     if (existedUser[0]) {
-      throwError(code.BAD_REQUEST, 'User already exists', status.BAD_REQUEST);
+      throwError(code.BAD_REQUEST, 'User already exists', statusCode.BAD_REQUEST);
     }
 
     if (existedUser[1]) {
-      throwError(code.BAD_REQUEST, 'User already exists', status.BAD_REQUEST);
+      throwError(code.BAD_REQUEST, 'User already exists', statusCode.BAD_REQUEST);
     }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);

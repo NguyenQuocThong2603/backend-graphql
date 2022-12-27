@@ -1,7 +1,7 @@
-const status = require('./status');
+const statusCode = require('./status');
 const code = require('./code');
 
 module.exports = {
-  status,
+  statusCode,
   code,
 };

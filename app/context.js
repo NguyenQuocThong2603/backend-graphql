@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server-express');
-const { clientRedis, code, status } = require('./datasources/utils');
+const { clientRedis, code, statusCode } = require('./datasources/utils');
 const { scope, throwError } = require('./utils');
 
 async function createContext({ req }) {
@@ -10,12 +10,12 @@ async function createContext({ req }) {
   if (!user) {
     if (!scope.guestScope.some(operation => operation === queryAfterParse.definitions[0]
       .selectionSet.selections[0].name.value)) {
-      throwError(code.UNAUTHORIZED, 'Unauthorized', status.UNAUTHORIZED);
+      throwError(code.UNAUTHORIZED, 'Unauthorized', statusCode.UNAUTHORIZED);
     }
   } else if (user.role === 'User') {
     if (!scope.userScope.some(operation => operation === queryAfterParse.definitions[0]
       .selectionSet.selections[0].name.value)) {
-      throwError(code.UNAUTHORIZED, 'Unauthorized', status.UNAUTHORIZED);
+      throwError(code.UNAUTHORIZED, 'Unauthorized', statusCode.UNAUTHORIZED);
     }
   }
 

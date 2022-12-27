@@ -18,7 +18,16 @@ async function getUsers(args, info) {
   }).select(fields).lean();
   return users;
 }
+
+async function getFollowerCount(parent, context) {
+  const { _id } = parent;
+  if (!_id) return null;
+  const followerCount = await context.dataSources.loaders.userLoader.load(_id);
+  return followerCount;
+}
+
 module.exports = {
   getProfile,
   getUsers,
+  getFollowerCount,
 };

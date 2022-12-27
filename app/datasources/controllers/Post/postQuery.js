@@ -1,5 +1,5 @@
-const { Clap, Post } = require('../../models');
-const { getSelectedFieldsWithoutRecursive, code, status } = require('../../utils');
+const { Post } = require('../../models');
+const { getSelectedFieldsWithoutRecursive, code, statusCode } = require('../../utils');
 const { throwError } = require('../../../utils');
 
 async function getPost(args, info) {
@@ -11,7 +11,7 @@ async function getPost(args, info) {
     }).select(fields).lean();
     return post;
   } catch (err) {
-    return throwError(code.NOT_FOUND, 'Post not found', status.NOT_FOUND);
+    return throwError(code.NOT_FOUND, 'Post not found', statusCode.NOT_FOUND);
   }
 }
 
@@ -28,16 +28,15 @@ async function getPosts(args, info) {
 
 async function getClapCount(parent, context) {
   const { _id } = parent;
-  const numberOfClaps = await Clap.find({
-    post: _id,
-  }).count();
-  return numberOfClaps;
+  if (!_id) return null;
+  const clapCount = await context.dataSources.loaders.postLoader.postLoaderClapCount.load(_id);
+  return clapCount;
 }
 
 async function getOwner(parent, context) {
   const { owner } = parent;
   if (!owner) return null;
-  const ownerInDB = context.dataSources.loaders.postLoader.postLoaderOwner.load(owner);
+  const ownerInDB = await context.dataSources.loaders.postLoader.postLoaderOwner.load(owner);
   return ownerInDB;
 }
 
