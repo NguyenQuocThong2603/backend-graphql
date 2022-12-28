@@ -2,6 +2,7 @@ const mutationResolver = {
   // auth
   register: (_, args, context) => context.dataSources.authController.register(args),
   login: (_, args, context, info) => context.dataSources.authController.login(args, context, info),
+  logout: (_, __, context) => context.dataSources.authController.logout(context),
 
   // admin
   disableUser: (_, args, context) => context.dataSources.adminController.disableUser(args, context),

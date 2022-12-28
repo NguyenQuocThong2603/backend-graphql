@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const { User } = require('../../models');
-const { getSelectedFields, code, statusCode, authUtils } = require('../../utils');
+const { getSelectedFields, code, statusCode, authUtils, createGeneralResponse } = require('../../utils');
 const { throwError } = require('../../../utils');
 const config = require('../../../config');
 
@@ -71,7 +71,15 @@ async function login(args, context, info) {
   return authUtils.createLoginResponse(true, 'Login succeed', token, user);
 }
 
+async function logout(context) {
+  const { user } = context;
+  const { clientRedis } = context.dataSources;
+  await clientRedis.del(user.token);
+  return createGeneralResponse(true, 'Logout succeed');
+}
+
 module.exports = {
   register,
   login,
+  logout,
 };

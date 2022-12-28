@@ -22,6 +22,7 @@ async function createContext({ req }) {
   const user = {
     _id: userId,
     role,
+    token,
   };
   return { query, user, req };
 }
