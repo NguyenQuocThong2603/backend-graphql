@@ -19,6 +19,8 @@ async function getUsers(args, info) {
   return users;
 }
 
+// Dataloader functions
+
 async function getFollowerCount(parent, context) {
   const { _id } = parent;
   if (!_id) return null;

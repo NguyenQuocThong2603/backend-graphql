@@ -1,4 +1,4 @@
-const { Clap, Post } = require('../../models');
+const { Clap, Post, Comment } = require('../../models');
 const { createGeneralResponse } = require('../../utils');
 
 async function clapPost(args, context) {
@@ -39,18 +39,76 @@ async function unclapPost(args, context) {
   const { user } = context;
   const { postId } = args;
 
+  const post = await Post.findOne({
+    _id: postId,
+  }, { owner: 1 }).lean();
+
+  if (!post || post.status === 'Hidden' || post.status === 'Draft' || post.status === 'Deleted') {
+    return createGeneralResponse(false, 'Unclap post failed');
+  }
+
   const deleteResult = await Clap.deleteOne({
     user: user._id,
     post: postId,
   });
 
   if (!deleteResult.deletedCount) {
-    return createGeneralResponse(false, 'Unclap failed');
+    return createGeneralResponse(false, 'Unclap post failed');
   }
-  return createGeneralResponse(true, 'Unclap succeed');
+  return createGeneralResponse(true, 'Unclap post succeed');
+}
+
+async function clapComment(args, context) {
+  const { user } = context;
+  const { commentId, count } = args;
+
+  const comment = await Comment.findOne({
+    _id: commentId,
+  }, { owner: 1 }).lean();
+
+  if (!comment) {
+    return createGeneralResponse(false, 'Clap comment failed');
+  }
+
+  const clapInDB = await Clap.findOne({
+    user: user._id,
+    comment: commentId,
+  }, { _id: 1 }).lean();
+
+  if (!clapInDB) {
+    const newClap = new Clap({
+      user: user._id,
+      comment: commentId,
+      count,
+    });
+    await newClap.save();
+    return createGeneralResponse(true, 'Clap comment succeed');
+  }
+  await Clap.updateOne({
+    user: user._id,
+    comment: commentId,
+  }, { $inc: { count } });
+  return createGeneralResponse(true, 'Clap comment succeed');
+}
+
+async function unclapComment(args, context) {
+  const { user } = context;
+  const { commentId } = args;
+
+  const deleteResult = await Clap.deleteOne({
+    user: user._id,
+    comment: commentId,
+  });
+
+  if (!deleteResult.deletedCount) {
+    return createGeneralResponse(false, 'Unclap comment failed');
+  }
+  return createGeneralResponse(true, 'Unclap comment succeed');
 }
 
 module.exports = {
   clapPost,
   unclapPost,
+  clapComment,
+  unclapComment,
 };

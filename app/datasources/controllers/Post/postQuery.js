@@ -26,6 +26,8 @@ async function getPosts(args, info) {
   return posts;
 }
 
+// Dataloader functions
+
 async function getClapCount(parent, context) {
   const { _id } = parent;
   if (!_id) return null;

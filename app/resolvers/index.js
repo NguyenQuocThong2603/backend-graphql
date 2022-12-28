@@ -3,6 +3,7 @@ const mutationResolver = require('./mutation');
 const postResolver = require('./postResolver');
 const userResolver = require('./userResolver');
 const scalarResolver = require('./scalarResolver');
+const commentResolver = require('./commentResolver');
 
 module.exports = {
   Query: queryResolver,
@@ -10,4 +11,5 @@ module.exports = {
   ...scalarResolver,
   ...postResolver,
   ...userResolver,
+  ...commentResolver,
 };

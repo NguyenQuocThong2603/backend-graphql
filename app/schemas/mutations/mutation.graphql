@@ -19,5 +19,5 @@ type Mutation {
   comment(input: CommentInput): Comment
   updateComment(input: UpdateCommentInput): Comment
   reply(input: ReplyCommentInput): Comment
-  deleteComment(_id: ID!): GeneralResponse
+  deleteComment(id: ID!): GeneralResponse
 }

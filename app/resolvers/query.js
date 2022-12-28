@@ -9,5 +9,8 @@ const queryResolver = {
   // post
   post: (_, args, context, info) => context.dataSources.postController.getPost(args, info),
   posts: (_, args, context, info) => context.dataSources.postController.getPosts(args, info),
+
+  // comment
+  replies: (_, args, context, info) => context.dataSources.commentController.replies(args, info),
 };
 module.exports = queryResolver;

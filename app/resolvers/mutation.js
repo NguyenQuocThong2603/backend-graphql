@@ -19,9 +19,14 @@ const mutationResolver = {
   // clap
   clapPost: (_, args, context) => context.dataSources.clapController.clapPost(args, context),
   unclapPost: (_, args, context) => context.dataSources.clapController.unclapPost(args, context),
+  clapComment: (_, args, context) => context.dataSources.clapController.clapComment(args, context),
+  unclapComment: (_, args, context) => context.dataSources.clapController.unclapComment(args, context),
 
   // comment
   comment: (_, args, context) => context.dataSources.commentController.comment(args, context),
+  updateComment: (_, args, context, info) => context.dataSources.commentController.updateComment(args, context, info),
+  reply: (_, args, context) => context.dataSources.commentController.reply(args, context),
+  deleteComment: (_, args, context) => context.dataSources.commentController.deleteComment(args, context),
 };
 
 module.exports = mutationResolver;
