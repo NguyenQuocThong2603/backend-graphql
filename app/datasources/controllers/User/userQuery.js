@@ -5,7 +5,7 @@ async function getProfile(context, info) {
   const { user } = context;
   const fields = getSelectedFieldsWithoutRecursive(info.fieldNodes[0].selectionSet.selections);
   const userInDB = await User.findOne({
-    email: user.email,
+    _id: user._id,
   }).select(fields).lean();
   return userInDB;
 }

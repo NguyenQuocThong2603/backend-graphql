@@ -7,7 +7,7 @@ async function disableUser(args, context) {
     const { id } = args;
     const user = await User.findOne({
       _id: id,
-    }, { email: 1, status: 1 });
+    }, { status: 1 });
     if (!user) {
       return createGeneralResponse(false, 'Disable user failed');
     }
@@ -16,11 +16,14 @@ async function disableUser(args, context) {
       return createGeneralResponse(false, 'User has been disable before');
     }
 
-    const keysOfSession = await clientRedis.lrange(user.email, 0, -1);
-    clientRedis.del(user.email);
-    keysOfSession.forEach(key => {
-      clientRedis.del(key);
-    });
+    let cursor = 0;
+
+    do {
+      const resultOfScan = await clientRedis.scan(cursor, 'MATCH', `*${user._id}`, 'COUNT', '10');
+      cursor = resultOfScan[0];
+      console.log(resultOfScan[1]);
+      await clientRedis.del(resultOfScan[1]);
+    } while (cursor !== '0');
 
     user.status = 'Deactivated';
     await user.save();
