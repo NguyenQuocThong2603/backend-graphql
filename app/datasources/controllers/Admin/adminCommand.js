@@ -9,7 +9,7 @@ async function disableUser(args, context) {
       _id: id,
     }, { email: 1, status: 1 });
     if (!user) {
-      return createGeneralResponse(false, 'User not found');
+      return createGeneralResponse(false, 'Disable user failed');
     }
 
     if (user.status === 'Deactivated') {

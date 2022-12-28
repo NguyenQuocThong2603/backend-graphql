@@ -10,7 +10,7 @@ async function getClapByIds(ids) {
     {
       $group: {
         _id: '$post',
-        count: { $sum: 1 },
+        count: { $sum: '$count' },
       },
     },
   ]);

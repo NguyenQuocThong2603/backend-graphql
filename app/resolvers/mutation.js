@@ -6,15 +6,22 @@ const mutationResolver = {
   // admin
   disableUser: (_, args, context) => context.dataSources.adminController.disableUser(args, context),
 
-  // user
-  follow: (_, args, context) => context.dataSources.userController.follow(args, context),
-  unfollow: (_, args, context) => context.dataSources.userController.unfollow(args, context),
+  // follow
+  follow: (_, args, context) => context.dataSources.followController.follow(args, context),
+  unfollow: (_, args, context) => context.dataSources.followController.unfollow(args, context),
 
   // post
   createPost: (_, args, context) => context.dataSources.postController.createPost(args, context),
   updatePost: (_, args, context, info) => context.dataSources.postController.updatePost(args, context, info),
   deletePost: (_, args, context) => context.dataSources.postController.deletePost(args, context),
   hidePost: (_, args, context) => context.dataSources.postController.hidePost(args, context),
+
+  // clap
+  clapPost: (_, args, context) => context.dataSources.clapController.clapPost(args, context),
+  unclapPost: (_, args, context) => context.dataSources.clapController.unclapPost(args, context),
+
+  // comment
+  comment: (_, args, context) => context.dataSources.commentController.comment(args, context),
 };
 
 module.exports = mutationResolver;

@@ -63,7 +63,7 @@ async function login(args, context, info) {
   if (user.status === 'Deactivated') {
     return authUtils.createLoginResponse(false, 'Account has been disabled', null, null);
   }
-  const token = crypto.randomBytes(20).toString('hex');
+  const token = crypto.randomBytes(30).toString('hex');
   return Promise.all([clientRedis.setex(
     token,
     config.redisDbs.expiredTime / 1000,
