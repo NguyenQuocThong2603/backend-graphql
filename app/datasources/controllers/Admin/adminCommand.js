@@ -22,7 +22,9 @@ async function disableUser(args, context) {
       const resultOfScan = await clientRedis.scan(cursor, 'MATCH', `*${user._id}`, 'COUNT', '10');
       cursor = resultOfScan[0];
       console.log(resultOfScan[1]);
-      await clientRedis.del(resultOfScan[1]);
+      if (resultOfScan) {
+        await clientRedis.del(resultOfScan[1]);
+      }
     } while (cursor !== '0');
 
     user.status = 'Deactivated';
