@@ -1,17 +1,17 @@
-const authController = require('./Auth');
-const userController = require('./User');
-const postController = require('./Post');
-const adminController = require('./Admin');
-const clapController = require('./Clap');
-const followController = require('./Follow');
-const commentController = require('./Comment');
+const Auth = require('./Auth');
+const User = require('./User');
+const Post = require('./Post');
+const Admin = require('./Admin');
+const Clap = require('./Clap');
+const Follow = require('./Follow');
+const Comment = require('./Comment');
 
 module.exports = {
-  userController,
-  authController,
-  postController,
-  adminController,
-  clapController,
-  followController,
-  commentController,
+  User,
+  Auth,
+  Post,
+  Admin,
+  Clap,
+  Follow,
+  Comment,
 };

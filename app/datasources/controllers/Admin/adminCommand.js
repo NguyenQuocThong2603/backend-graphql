@@ -1,7 +1,7 @@
 const { User } = require('../../models');
 const { createGeneralResponse } = require('../../utils');
 
-async function disableUser(args, context) {
+async function disableUser(parent, args, context, info) {
   try {
     const { clientRedis } = context.dataSources;
     const { id } = args;
@@ -21,7 +21,6 @@ async function disableUser(args, context) {
     do {
       const resultOfScan = await clientRedis.scan(cursor, 'MATCH', `*${user._id}`, 'COUNT', '10');
       cursor = resultOfScan[0];
-      console.log(resultOfScan[1]);
       if (resultOfScan) {
         await clientRedis.del(resultOfScan[1]);
       }
@@ -32,7 +31,7 @@ async function disableUser(args, context) {
     return createGeneralResponse(true, 'Disable user succeed');
   } catch (err) {
     logger.error(`${err.message}\n ${err.stack}`);
-    return createGeneralResponse(false, err.message);
+    return createGeneralResponse(false, 'Internal server error');
   }
 }
 

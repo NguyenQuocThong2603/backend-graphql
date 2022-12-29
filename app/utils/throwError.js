@@ -1,14 +1,7 @@
 const { GraphQLError } = require('graphql');
 
-function throwError(code, message, status) {
-  throw new GraphQLError(message, {
-    extensions: {
-      code,
-      http: {
-        status,
-      },
-    },
-  });
+function throwError(message) {
+  throw new GraphQLError(message);
 }
 
 module.exports = throwError;

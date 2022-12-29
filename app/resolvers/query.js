@@ -1,16 +1,39 @@
+function getUserAdmin(parent, args, context, info) {
+  return context.dataSources.Admin.getUserAdmin(parent, args, context, info);
+}
+
+function getProfile(parent, args, context, info) {
+  return context.dataSources.User.getProfile(parent, args, context, info);
+}
+
+function getUsers(parent, args, context, info) {
+  return context.dataSources.User.getUsers(parent, args, context, info);
+}
+
+function getPost(parent, args, context, info) {
+  return context.dataSources.Post.getPost(parent, args, context, info);
+}
+
+function getPosts(parent, args, context, info) {
+  return context.dataSources.Post.getPosts(parent, args, context, info);
+}
+
+function replies(parent, args, context, info) {
+  return context.dataSources.Comment.replies(parent, args, context, info);
+}
 const queryResolver = {
   // admin
-  user: (_, args, context, info) => context.dataSources.adminController.getUserAdmin(args, info),
+  user: getUserAdmin,
 
   // user
-  me: (_, __, context, info) => context.dataSources.userController.getProfile(context, info),
-  users: (_, args, context, info) => context.dataSources.userController.getUsers(args, info),
+  me: getProfile,
+  users: getUsers,
 
   // post
-  post: (_, args, context, info) => context.dataSources.postController.getPost(args, info),
-  posts: (_, args, context, info) => context.dataSources.postController.getPosts(args, info),
+  post: getPost,
+  posts: getPosts,
 
   // comment
-  replies: (_, args, context, info) => context.dataSources.commentController.replies(args, info),
+  replies,
 };
 module.exports = queryResolver;

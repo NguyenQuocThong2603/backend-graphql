@@ -1,9 +1,9 @@
-const postLoader = require('./postLoader');
-const userLoader = require('./userLoader');
-const commentLoader = require('./commentLoader');
+const Post = require('./post');
+const User = require('./user');
+const Comment = require('./comment');
 
 module.exports = {
-  userLoader,
-  postLoader,
-  commentLoader,
+  ...User,
+  ...Post,
+  ...Comment,
 };

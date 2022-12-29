@@ -1,7 +1,7 @@
 const { Follow, User } = require('../../models');
 const { createGeneralResponse } = require('../../utils');
 
-async function follow(args, context) {
+async function follow(parent, args, context, info) {
   try {
     const { user } = context;
     const { followee } = args;
@@ -33,11 +33,11 @@ async function follow(args, context) {
     return createGeneralResponse(true, 'Follow succeed');
   } catch (err) {
     logger.error(`${err.message}\n ${err.stack}`);
-    return createGeneralResponse(false, err.message);
+    return createGeneralResponse(false, 'Internal server error');
   }
 }
 
-async function unfollow(args, context) {
+async function unfollow(parent, args, context, info) {
   try {
     const { user } = context;
     const { followee } = args;
@@ -53,7 +53,7 @@ async function unfollow(args, context) {
     return createGeneralResponse(true, 'Unfollow succeed');
   } catch (err) {
     logger.error(`${err.message}\n ${err.stack}`);
-    return createGeneralResponse(false, err.message);
+    return createGeneralResponse(false, 'Internal server error');
   }
 }
 module.exports = {

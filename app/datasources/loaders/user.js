@@ -1,10 +1,11 @@
-const DataLoader = require('dataloader');
+const mongoose = require('mongoose');
 const { Follow } = require('../models');
 
-async function getFollowerCountByIds(ids) {
+async function batchFollowerCountOfUser(ids) {
+  const newIds = ids.map(id => mongoose.Types.ObjectId(id));
   const followersCount = await Follow.aggregate([
     {
-      $match: { followee: { $in: ids } },
+      $match: { followee: { $in: newIds } },
     },
     {
       $group: {
@@ -15,10 +16,11 @@ async function getFollowerCountByIds(ids) {
   ]);
   const followersCountMap = {};
   followersCount.forEach(followerCount => {
-    followersCountMap[followerCount._id] = followerCount.count;
+    followersCountMap[followerCount._id.toString()] = followerCount.count;
   });
   return ids.map(id => followersCountMap[id] || 0);
 }
-const userLoader = new DataLoader(getFollowerCountByIds);
 
-module.exports = userLoader;
+module.exports = {
+  batchFollowerCountOfUser,
+};

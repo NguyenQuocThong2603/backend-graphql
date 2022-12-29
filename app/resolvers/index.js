@@ -1,15 +1,15 @@
 const queryResolver = require('./query');
 const mutationResolver = require('./mutation');
-const postResolver = require('./postResolver');
-const userResolver = require('./userResolver');
-const scalarResolver = require('./scalarResolver');
-const commentResolver = require('./commentResolver');
+const Post = require('./post');
+const User = require('./user');
+const DateTime = require('./datetime');
+const Comment = require('./comment');
 
 module.exports = {
   Query: queryResolver,
   Mutation: mutationResolver,
-  ...scalarResolver,
-  ...postResolver,
-  ...userResolver,
-  ...commentResolver,
+  DateTime,
+  Post,
+  User,
+  Comment,
 };
