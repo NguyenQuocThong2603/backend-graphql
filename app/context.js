@@ -4,24 +4,29 @@ const { scope, throwError, createLoaders } = require('./utils');
 
 async function createContext({ req }) {
   const { query } = req.body;
-  const token = req.headers.authorization;
-  let userId;
-  if (token) {
-    userId = token.split(':')[1];
-  }
-  const role = await clientRedis.get(token);
   const queryAfterParse = gql(query);
+
+  if (scope.guestScope.some(operation => operation === queryAfterParse.definitions[0]
+    .selectionSet.selections[0].name.value)) {
+    return { loaders: createLoaders() };
+  }
+
+  const token = req.headers.authorization;
+  const role = await clientRedis.get(token);
+
   if (!role) {
-    if (!scope.guestScope.some(operation => operation === queryAfterParse.definitions[0]
-      .selectionSet.selections[0].name.value)) {
-      throwError('Unauthorized');
-    }
-  } else if (role === 'User') {
+    throwError('Unauthorized');
+  }
+
+  if (role === 'User') {
     if (!scope.userScope.some(operation => operation === queryAfterParse.definitions[0]
       .selectionSet.selections[0].name.value)) {
       throwError('Unauthorized');
     }
   }
+
+  const userId = token.split(':')[1];
+
   const user = {
     _id: userId,
     role,

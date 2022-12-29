@@ -1,6 +1,6 @@
 const { getSelectedFieldsWithoutRecursive } = require('../../utils');
 const { Comment } = require('../../models');
-const throwError = require('../../../utils');
+const { throwError } = require('../../../utils');
 
 async function replies(parent, args, context, info) {
   try {
@@ -15,7 +15,7 @@ async function replies(parent, args, context, info) {
     return comments;
   } catch (err) {
     logger.error(`${err.message}\n ${err.stack}`);
-    throwError('Internal server error');
+    return throwError('Internal server error');
   }
 }
 
@@ -24,7 +24,7 @@ async function replies(parent, args, context, info) {
 async function getUser(parent, args, context, info) {
   const { user } = parent;
   if (!user) return null;
-  const userInDB = await context.loaders.userOfComment.load(user.tostring());
+  const userInDB = await context.loaders.userOfComment.load(user.toString());
   return userInDB;
 }
 

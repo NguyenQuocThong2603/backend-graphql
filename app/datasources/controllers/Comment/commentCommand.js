@@ -78,24 +78,43 @@ async function reply(parent, args, context, info) {
 async function deleteComment(parent, args, context, info) {
   const { user } = context;
   const { id } = args;
-  let ids = [id];
   const deleteResult = await Comment.deleteOne({
     user: user._id,
     _id: id,
   });
-  do {
-    const subComment = await Comment.find({
-      _id: ids,
-    }, { _id: 1 }).lean();
-    ids = [...subComment];
-    await Comment.deleteMany({
-      _id: subComment._id,
-    });
-  } while (!ids);
 
   if (!deleteResult.deletedCount) {
     return createGeneralResponse(false, 'Delete comment failed');
   }
+
+  const idsOfSubComment = [];
+  let subComments = null;
+  let isFirstTime = true;
+  let index = 0;
+
+  do {
+    if (isFirstTime) {
+      isFirstTime = false;
+      subComments = await Comment.find({
+        parent: id,
+      }, { _id: 1 }).lean();
+      subComments.forEach(subComment => {
+        idsOfSubComment.push(subComment._id);
+      });
+    } else {
+      subComments = await Comment.find({
+        parent: idsOfSubComment[index],
+      }, { _id: 1 }).lean();
+      subComments.forEach(subComment => {
+        idsOfSubComment.push(subComment._id);
+      });
+      index += 1;
+    }
+  } while (index !== idsOfSubComment.length);
+
+  await Comment.deleteMany({
+    _id: { $in: idsOfSubComment },
+  });
 
   return createGeneralResponse(true, 'Delete comment succeed');
 }

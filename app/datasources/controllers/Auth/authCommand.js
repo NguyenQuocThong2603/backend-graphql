@@ -37,7 +37,7 @@ async function register(parent, args, context, info) {
     });
   } catch (err) {
     logger.error(`${err.message}\n ${err.stack}`);
-    throwError('Internal server error');
+    return throwError('Internal server error');
   }
 }
 
