@@ -9,10 +9,6 @@ async function getProfile(parent, args, context, info) {
     const userInDB = await User.findOne({
       _id: user._id,
     }).select(fields).lean();
-
-    if (!userInDB) {
-      throwError('User not found');
-    }
     return userInDB;
   } catch (err) {
     logger.error(`${err.message}\n ${err.stack}`);
@@ -27,10 +23,6 @@ async function getUsers(parent, args, context, info) {
     const users = await User.find({
       firstName: args.name,
     }).select(fields).lean();
-
-    if (!users) {
-      throwError('Users not found');
-    }
     return users;
   } catch (err) {
     logger.error(`${err.message}\n ${err.stack}`);
@@ -38,17 +30,7 @@ async function getUsers(parent, args, context, info) {
   }
 }
 
-// Dataloader functions
-
-async function getFollowerCount(parent, args, context, info) {
-  const { _id } = parent;
-  if (!_id) return null;
-  const followerCount = await context.loaders.followerCountOfUser.load(_id.toString());
-  return followerCount;
-}
-
 module.exports = {
   getProfile,
   getUsers,
-  getFollowerCount,
 };

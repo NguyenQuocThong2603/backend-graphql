@@ -27,12 +27,12 @@ async function createContext({ req }) {
 
   const userId = token.split(':')[1];
 
-  const user = {
+  const signature = {
     _id: userId,
     role,
     token,
   };
-  return { user, loaders: createLoaders() };
+  return { signature, loaders: createLoaders() };
 }
 
 module.exports = createContext;

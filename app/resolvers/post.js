@@ -1,9 +1,15 @@
-function getClapCount(parent, args, context, info) {
-  return context.dataSources.Post.getClapCount(parent, args, context, info);
+async function getClapCount(post, args, context, info) {
+  const { _id } = post;
+  if (!_id) return null;
+  const clapCount = await context.loaders.clapCountOfPost.load(_id.toString());
+  return clapCount;
 }
 
-function getOwner(parent, args, context, info) {
-  return context.dataSources.Post.getOwner(parent, args, context, info);
+async function getOwner(post, args, context, info) {
+  const { owner } = post;
+  if (!owner) return null;
+  const ownerInDB = await context.loaders.ownerOfPost.load(owner.toString());
+  return ownerInDB;
 }
 const postResolver = {
   clapCount: getClapCount,

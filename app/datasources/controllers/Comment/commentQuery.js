@@ -20,22 +20,6 @@ async function replies(parent, args, context, info) {
 }
 
 // Dataloader functions
-
-async function getUser(parent, args, context, info) {
-  const { user } = parent;
-  if (!user) return null;
-  const userInDB = await context.loaders.userOfComment.load(user.toString());
-  return userInDB;
-}
-
-async function getPost(parent, args, context, info) {
-  const { post } = parent;
-  if (!post) return null;
-  const postInDB = await context.loaders.postOfComment.load(post.toString());
-  return postInDB;
-}
 module.exports = {
   replies,
-  getUser,
-  getPost,
 };

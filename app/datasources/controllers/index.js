@@ -7,11 +7,11 @@ const Follow = require('./Follow');
 const Comment = require('./Comment');
 
 module.exports = {
-  User,
-  Auth,
-  Post,
-  Admin,
-  Clap,
-  Follow,
-  Comment,
+  ...User,
+  ...Auth,
+  ...Post,
+  ...Admin,
+  ...Clap,
+  ...Follow,
+  ...Comment,
 };
