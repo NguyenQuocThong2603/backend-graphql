@@ -19,7 +19,6 @@ async function replies(parent, args, context, info) {
   }
 }
 
-// Dataloader functions
 module.exports = {
   replies,
 };

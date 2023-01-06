@@ -4,11 +4,11 @@ const { throwError } = require('../../../utils');
 
 function createPost(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { title, content, status } = args;
     const post = new Post({
       title,
-      owner: user._id,
+      owner: signature._id,
       content,
       status,
     });
@@ -21,12 +21,12 @@ function createPost(parent, args, context, info) {
 
 async function updatePost(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { id, ...updateInformation } = args.input;
     const fields = getSelectedFieldsWithoutRecursive(info.fieldNodes[0].selectionSet.selections);
     const post = await Post.findOneAndUpdate({
       _id: id,
-      owner: user._id,
+      owner: signature._id,
     }, { ...updateInformation }, { returnDocument: 'after' }).select(fields).lean();
 
     if (!post) {
@@ -41,11 +41,11 @@ async function updatePost(parent, args, context, info) {
 
 async function deletePost(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { id } = args;
     const post = await Post.findOne({
       _id: id,
-      owner: user._id,
+      owner: signature._id,
     }, { status: 1 });
 
     if (!post || post.status === 'Deleted') {
@@ -62,11 +62,11 @@ async function deletePost(parent, args, context, info) {
 
 async function hidePost(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { id } = args;
     const post = await Post.findOne({
       _id: id,
-      owner: user._id,
+      owner: signature._id,
     }, { status: 1 });
 
     if (!post || post.status === 'Deleted' || post.status === 'Hidden') {

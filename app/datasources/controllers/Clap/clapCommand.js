@@ -3,7 +3,7 @@ const { createGeneralResponse } = require('../../utils');
 
 async function clapPost(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { postId, count } = args;
 
     const post = await Post.findOne({
@@ -15,13 +15,13 @@ async function clapPost(parent, args, context, info) {
     }
 
     const clapInDB = await Clap.findOne({
-      user: user._id,
+      user: signature._id,
       post: postId,
     }, { _id: 1 }).lean();
 
     if (!clapInDB) {
       const newClap = new Clap({
-        user: user._id,
+        user: signature._id,
         post: postId,
         postOwner: post.owner,
         count,
@@ -30,7 +30,7 @@ async function clapPost(parent, args, context, info) {
       return createGeneralResponse(true, 'Clap post succeed');
     }
     await Clap.updateOne({
-      user: user._id,
+      user: signature._id,
       post: postId,
     }, { $inc: { count } });
     return createGeneralResponse(true, 'Clap post succeed');
@@ -42,7 +42,7 @@ async function clapPost(parent, args, context, info) {
 
 async function unclapPost(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { postId } = args;
 
     const post = await Post.findOne({
@@ -54,7 +54,7 @@ async function unclapPost(parent, args, context, info) {
     }
 
     const deleteResult = await Clap.deleteOne({
-      user: user._id,
+      user: signature._id,
       post: postId,
     });
 
@@ -70,7 +70,7 @@ async function unclapPost(parent, args, context, info) {
 
 async function clapComment(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { commentId, count } = args;
 
     const comment = await Comment.findOne({
@@ -82,13 +82,13 @@ async function clapComment(parent, args, context, info) {
     }
 
     const clapInDB = await Clap.findOne({
-      user: user._id,
+      user: signature._id,
       comment: commentId,
     }, { _id: 1 }).lean();
 
     if (!clapInDB) {
       const newClap = new Clap({
-        user: user._id,
+        user: signature._id,
         comment: commentId,
         count,
       });
@@ -96,7 +96,7 @@ async function clapComment(parent, args, context, info) {
       return createGeneralResponse(true, 'Clap comment succeed');
     }
     await Clap.updateOne({
-      user: user._id,
+      user: signature._id,
       comment: commentId,
     }, { $inc: { count } });
     return createGeneralResponse(true, 'Clap comment succeed');
@@ -108,11 +108,11 @@ async function clapComment(parent, args, context, info) {
 
 async function unclapComment(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { commentId } = args;
 
     const deleteResult = await Clap.deleteOne({
-      user: user._id,
+      user: signature._id,
       comment: commentId,
     });
 

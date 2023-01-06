@@ -5,7 +5,7 @@ const { throwError } = require('../../../utils');
 
 async function comment(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { postId, ...content } = args.input;
     const post = await Post.findOne({
       _id: postId,
@@ -17,7 +17,7 @@ async function comment(parent, args, context, info) {
 
     const newComment = new Comment({
       post: postId,
-      user: user._id,
+      user: signature._id,
       ...content,
     });
     return newComment.save();
@@ -29,13 +29,13 @@ async function comment(parent, args, context, info) {
 
 async function updateComment(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { commentId, ...content } = args.input;
     const fields = getSelectedFieldsWithoutRecursive(info.fieldNodes[0].selectionSet.selections);
 
     const commentInDB = await Comment.findOneAndUpdate({
       _id: commentId,
-      user: user._id,
+      user: signature._id,
     }, { ...content }, { returnDocument: 'after' }).select(fields).lean();
 
     if (!commentInDB) {
@@ -51,7 +51,7 @@ async function updateComment(parent, args, context, info) {
 
 async function reply(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { commentId, ...content } = args.input;
 
     const commentInDB = await Comment.findOne({
@@ -64,7 +64,7 @@ async function reply(parent, args, context, info) {
 
     const newReplyComment = new Comment({
       ...content,
-      user: user._id,
+      user: signature._id,
       post: commentInDB.post,
       parent: commentId,
     });
@@ -76,10 +76,10 @@ async function reply(parent, args, context, info) {
 }
 
 async function deleteComment(parent, args, context, info) {
-  const { user } = context;
+  const { signature } = context;
   const { id } = args;
   const deleteResult = await Comment.deleteOne({
-    user: user._id,
+    user: signature._id,
     _id: id,
   });
 

@@ -4,10 +4,10 @@ const { getSelectedFieldsWithoutRecursive } = require('../../utils');
 
 async function getProfile(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const fields = getSelectedFieldsWithoutRecursive(info.fieldNodes[0].selectionSet.selections);
     const userInDB = await User.findOne({
-      _id: user._id,
+      _id: signature._id,
     }).select(fields).lean();
     return userInDB;
   } catch (err) {

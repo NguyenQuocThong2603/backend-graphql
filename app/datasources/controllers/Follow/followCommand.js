@@ -3,9 +3,9 @@ const { createGeneralResponse } = require('../../utils');
 
 async function follow(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { followee } = args;
-    if (followee === user._id) {
+    if (followee === signature._id) {
       return createGeneralResponse(false, 'Follow failed');
     }
     const followeeInDB = await User.findOne({
@@ -17,7 +17,7 @@ async function follow(parent, args, context, info) {
     }
 
     const followInDB = await Follow.findOne({
-      follower: user._id,
+      follower: signature._id,
       followee,
     }, { _id: 1 }).lean();
 
@@ -26,7 +26,7 @@ async function follow(parent, args, context, info) {
     }
 
     const newFollow = new Follow({
-      follower: user._id,
+      follower: signature._id,
       followee,
     });
     await newFollow.save();
@@ -39,10 +39,10 @@ async function follow(parent, args, context, info) {
 
 async function unfollow(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { followee } = args;
     const deleteResult = await Follow.deleteOne({
-      follower: user._id,
+      follower: signature._id,
       followee,
     });
 

@@ -84,9 +84,9 @@ async function login(parent, args, context, info) {
 
 async function logout(parent, args, context, info) {
   try {
-    const { user } = context;
+    const { signature } = context;
     const { clientRedis } = context.dataSources;
-    await clientRedis.del(user.token);
+    await clientRedis.del(signature.token);
     return createGeneralResponse(true, 'Logout succeed');
   } catch (err) {
     logger.error(`${err.message}\n ${err.stack}`);
